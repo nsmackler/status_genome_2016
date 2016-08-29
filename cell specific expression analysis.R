@@ -3,7 +3,7 @@ require(limma);require(edgeR); require(EMMREML);require(RColorBrewer);require(gg
 require(gridExtra); require(grid); require(doParallel)
 
 #Load in data.
-load("~/Dropbox/SGE_data/MANUSCRIPT_FEB2016/Science submission/revisions/github_code/macaque_status_cell.RData")
+load(url("https://github.com/nsmackler/status_genome_2016/blob/master/macaque_status_cell.RData?raw=true"))
 # There are 5 R objects
 # read_counts:  raw read counts for all 440 samples after removal of genes with a median RPKM < 2
 dim(read_counts)
