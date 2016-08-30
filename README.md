@@ -1,3 +1,3 @@
 # status_genome_2016
-data and code for "Social status alters immune regulation and response to infection"
+Data and code for all analyses in the manuscript, "Social status alters immune regulation and response to infection".
 
