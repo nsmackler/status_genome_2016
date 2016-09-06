@@ -16,7 +16,7 @@ iters=2
 ## Load input files: reads, metadata and kinship matrixes in three data.frames (reads, cols, K, respectively)
 #############################################################################################################
 
-load("Truculture_data.RData")
+load(url("https://github.com/nsmackler/status_genome_2016/blob/master/Truculture_data.RData?raw=true"))
 
 #################################################################################
 ## Set up metadata:
