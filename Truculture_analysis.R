@@ -47,7 +47,7 @@ exp <- data.frame(scale(exp))
 pca <-prcomp(exp,scale=T)
 cols<-data.frame(cols,PC1=pca$x[,1],PC2=pca$x[,2])
 
-##2)Relevel condition factor so as to put the baseline at negative controls (NC)
+##2)Relevel condition factor so as to put the baseline in control condition (NC)
 cols$Condition <- relevel(cols$Condition, ref = "NC")
 
 ##3)Standardize Elo scores for animals' hierarchy.
@@ -82,7 +82,7 @@ exp<-residuals.MArrayLM(object=fit, v)
 exp=exp[order(rownames(exp)),]
 
 ###########################################################################################
-## Run linear model: nested (for Eloe effects within condition and LPS stimulation effects)
+## Run linear model: nested (for Elo effects in LPS+ and LPS-)
 ###########################################################################################
 title="Elo_and_LPS_effects"
 
@@ -183,7 +183,7 @@ dev.off()
 write.table(PCA_table,paste0("results/",title,"/PCA_table.txt"))
 
 ################################################################################################################################
-## Run iters iterations of the model after permutting Elo scores to retrieve an empiric distribution of p-values for Elo effects
+## Run iters iterations of the model after permutting Elo ratings to retrieve an empiric distribution of p-values for rank effects
 ################################################################################################################################
 
 cols_random<-cols
@@ -195,7 +195,7 @@ for(iter in 1:iters)
     #Permute Elo among the set of samples flagged as 1 (one sample per individual)
 	cols_random$Elo[which(cols_random$flag==1)]=sample(cols_random$Elo[which(cols_random$flag==1)])
     
-    #Complete the poermuted Elos of the other samples (this way the mapping individual-to-rank is conserved in the permutations.
+    #Complete the permuted Elos of the other samples (this way the mapping individual-to-rank is conserved in the permutations)
 	for(i in 1:length(levels(cols_random$Animal)))
 	{
 		set=which(cols_random$Animal==levels(cols_random$Animal)[i] & cols_random$flag==0)
@@ -207,7 +207,7 @@ for(iter in 1:iters)
     #Declare null (i.e. based on permutations) nested design for fixed effects.
 	design = model.matrix(~Condition+Condition:Elo+Condition:Age+Condition:PC1+Condition:PC2,data=cols_random)
     
-    #Declare object res_null to store in it the permutations'  p-values:
+    #Declare object res_null to store in it the permutations' p-values:
 	res_null=exp[,1:(ncol(design))]
 	colnames(res_null)[1:ncol(design)]=paste0("p_value_",colnames(design))
 	
@@ -233,8 +233,8 @@ for(iter in 1:iters)
 }
 
 ###################################################################################################
-## Run iters iterations of the model after permutting Condition to retrieve an empiric distribution
-## of p-values for LPS stimulation effect (at average Elo,Age and Tissue composition)
+## Run iters iterations of the model after permuting Condition to retrieve an empirical distribution
+## of p-values for LPS stimulation effect (at average rank, age and tissue composition)
 ###################################################################################################
 
 cols_random<-cols
@@ -478,7 +478,7 @@ colnames(res_full)=c("beta_interaction_LPSxElo","sdev_interaction_LPSxElo","p_va
 ## Write full model results
 ###############################
 
-#Fixed effects coefficients, standard errors, pvalues and fdrs for Elo effects:
+#Fixed effects coefficients, standard errors, pvalues and fdrs for rank effects:
 write.table(res_full,paste0("results/",title,"/results_interactions.txt"))
 
 
