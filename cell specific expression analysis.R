@@ -111,7 +111,7 @@ EMMA_permute_rank_pvalues=lapply(names(residuals),function(pp){
 )
 names(EMMA_permute_rank_pvalues)=names(residuals)
 
-## calculate permuted FDRs
+## calculate FDRs using perm.fdr function
 
 
 #################################################################################################
